@@ -12,6 +12,7 @@ void
 death_animation()
 {
 	/* Flash twice then recede from the head to tail */
+	/* TODO */
 }
 
 void
@@ -23,6 +24,7 @@ win_animation()
 	/* Or the game could continue if there's an endless mode.
 	 * The current snake colour becomes the background and
 	 * a new snake appears */
+	/* TODO */
 }
 
 static inline void
@@ -68,20 +70,20 @@ main(int argc, char *argv[])
 	putc('\n', stdout);
 
 	/* Reset cursor position and store coordinates of top left corner */
-	int tl_x, tl_y;
+	int origin_x, origin_y;
 	printf("\e[?25l\e[%dA\e[%dG\e[41m\e[0m", game_height + 1, startx);
-	get_cursor_pos(&tl_x, &tl_y);
+	get_cursor_pos(&origin_x, &origin_y);
 
 
 	/* Game */
 	int snake_x_pos = game_width / 2,
 		snake_y_pos = game_height / 2;
+	int snake_len = 3;
 	const int max_snake_size = game_width * game_height;
-	struct _vec2 {
+	struct vec2 {
 		int x, y;
 	} snake_body_pos[max_snake_size];
-	int snake_len = 3, snake_head_offset = 0;
-	memset(snake_body_pos, 0, max_snake_size * sizeof(struct _vec2));
+	memset(snake_body_pos, 0, max_snake_size * sizeof(struct vec2));
 
 	int berry_x_pos = rand() % game_width,
 		berry_y_pos = rand() % game_height;
@@ -195,11 +197,11 @@ buffer_to_idx_1:
 
 		/* Draw snake and berry */
 		printf("\e[%d;%dH\e[41m  \e[%d;%dH\e[42m  \e[0m\e[2D",
-				berry_y_pos + tl_y, berry_x_pos * 2 + tl_x,
-				snake_y_pos + tl_y, snake_x_pos * 2 + tl_x);
+				berry_y_pos + origin_y, berry_x_pos * 2 + origin_x,
+				snake_y_pos + origin_y, snake_x_pos * 2 + origin_x);
 		printf("\e[%d;%dH  ",
-				snake_body_pos[snake_len].y + tl_y,
-				snake_body_pos[snake_len].x * 2 + tl_x);
+				snake_body_pos[snake_len].y + origin_y,
+				snake_body_pos[snake_len].x * 2 + origin_x);
 		fflush(stdout);
 
 		/* Clock */
@@ -210,7 +212,7 @@ buffer_to_idx_1:
 
 
 exit:
-	printf("\e[%d;1H\n\e[?25h", tl_y + game_height);
+	printf("\e[%d;1H\n\e[?25h", origin_y + game_height);
 	tcsetattr(1, 0, &save_attr);
 	return 0;
 }
