@@ -102,7 +102,7 @@ main(int argc, char *argv[])
 			if (c == 'q' || c == '')
 				break;
 			if (input_buffer[0] == NONE) {
-buffer_to_idx_0:
+buffer_in_idx_0:
 				if (c == 'd' && move_dir != LEFT)
 					input_buffer[0] = RIGHT;
 				else if (c == 'w' && move_dir != DOWN)
@@ -112,7 +112,7 @@ buffer_to_idx_0:
 				else if (c == 's' && move_dir != UP)
 					input_buffer[0] = DOWN;
 			} else if (input_buffer[1] == NONE) {
-buffer_to_idx_1:
+buffer_in_idx_1:
 				if (c == 'd' && input_buffer[0] != LEFT)
 					input_buffer[1] = RIGHT;
 				else if (c == 'w' && input_buffer[0] != DOWN)
@@ -122,10 +122,10 @@ buffer_to_idx_1:
 				else if (c == 's' && input_buffer[0] != UP)
 					input_buffer[1] = DOWN;
 				else
-					goto buffer_to_idx_0;
+					goto buffer_in_idx_0;
 			} else {
 				input_buffer[0] = input_buffer[1];
-				goto buffer_to_idx_1;
+				goto buffer_in_idx_1;
 			}
 
 			struct timespec currenttime;
